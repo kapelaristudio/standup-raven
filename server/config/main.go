@@ -39,8 +39,10 @@ const (
 
 	// PostTypeStandupReport is the post type the webapp registers a component
 	// for to draw ReportFormatUserCards. Mattermost only lets plugins use post
-	// types that start with "custom_".
-	PostTypeStandupReport = "custom_standup_raven_report"
+	// types that start with "custom_", and stores the type in a VARCHAR(26)
+	// without checking its length first, so a longer type fails as a database
+	// error when the post is saved.
+	PostTypeStandupReport = "custom_standup_raven"
 
 	CacheKeyPrefixNotificationStatus = "notif_status"
 	CacheKeyPrefixTeamStandupConfig  = "standup_config_"

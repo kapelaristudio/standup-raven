@@ -2,6 +2,7 @@ package notification
 
 import (
 	"encoding/json"
+	"strings"
 	"testing"
 	"time"
 
@@ -153,6 +154,13 @@ func TestGenerateUserCardsStandupReport(t *testing.T) {
 			}},
 		},
 	}, carried)
+}
+
+func TestPostTypeStandupReport_FitsTheDatabase(t *testing.T) {
+	// Posts.Type is a VARCHAR(26), and Post.IsValid does not check its length,
+	// so a longer type is only refused by the database when the report is saved.
+	assert.LessOrEqual(t, len(config.PostTypeStandupReport), 26)
+	assert.True(t, strings.HasPrefix(config.PostTypeStandupReport, model.PostCustomTypePrefix))
 }
 
 func TestGenerateReport_NewFormats(t *testing.T) {
