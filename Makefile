@@ -25,7 +25,7 @@ BUNDLE_DIR = dist/$(PLUGINNAME)
 # error reporting off, which is what a local build wants.
 SERVER_DSN ?=
 WEBAPP_DSN ?=
-ICON_DATA  = data:image/svg+xml;base64,$(shell base64 $(ICON_FILE) | tr -d '\n')
+ICON_DATA  = data:image/svg+xml;base64,$(shell base64 < $(ICON_FILE) | tr -d '\n')
 LDFLAGS    = -X 'main.PluginVersion=$(PLUGINVERSION)' -X 'main.SentryServerDSN=$(SERVER_DSN)' -X 'main.SentryWebappDSN=$(WEBAPP_DSN)' -X 'main.EncodedPluginIcon=$(ICON_DATA)'
 
 .PHONY: default build test test-server test-webapp coverage dist buildserver buildwebapp package \
