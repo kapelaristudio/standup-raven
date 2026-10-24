@@ -47,12 +47,18 @@
   box-sizing: border-box;
   height: 32px;
   padding: 0 12px;
-  border: 1px solid var(--border-default, rgba(63, 67, 80, 0.16));
+  border: 1px solid rgba(var(--center-channel-color-rgb, 63, 67, 80), 0.16);
   border-radius: var(--radius-s, 4px);
   background: var(--center-channel-bg, #fff);
   color: var(--center-channel-color, #3f4350);
   font-family: inherit;
   font-size: 14px;
+}
+
+/* The border is derived from the theme's text colour, as Mattermost's own
+   inputs do, so it stays visible on a dark theme as well as a light one. */
+.standup-control:hover {
+  border-color: rgba(var(--center-channel-color-rgb, 63, 67, 80), 0.48);
 }
 
 .standup-control:focus {
@@ -62,6 +68,7 @@
 }
 
 .standup-control:disabled {
+  border-color: rgba(var(--center-channel-color-rgb, 63, 67, 80), 0.16);
   background: rgba(var(--center-channel-color-rgb, 63, 67, 80), 0.04);
   color: rgba(var(--center-channel-color-rgb, 63, 67, 80), 0.56);
   cursor: not-allowed;
@@ -84,10 +91,14 @@
   align-items: center;
   width: 100%;
   height: 32px;
-  border: 1px solid var(--border-default, rgba(63, 67, 80, 0.16));
+  border: 1px solid rgba(var(--center-channel-color-rgb, 63, 67, 80), 0.16);
   border-radius: var(--radius-s, 4px);
   background: var(--center-channel-bg, #fff);
   color: var(--center-channel-color, #3f4350);
+}
+
+.standup-input-group:hover {
+  border-color: rgba(var(--center-channel-color-rgb, 63, 67, 80), 0.48);
 }
 
 .standup-input-group:focus-within {
@@ -165,7 +176,7 @@
   z-index: var(--z-index-menu, 1150);
   overflow: hidden;
   padding: 4px 0;
-  border: 1px solid var(--border-light, rgba(63, 67, 80, 0.08));
+  border: 1px solid rgba(var(--center-channel-color-rgb, 63, 67, 80), 0.08);
   border-radius: var(--radius-s, 4px);
   background: var(--center-channel-bg, #fff);
   box-shadow: var(--elevation-3, 0 8px 24px rgba(0, 0, 0, 0.16));
@@ -288,7 +299,7 @@
   display: flex;
   gap: 4px;
   margin: 0 0 20px;
-  border-bottom: 1px solid var(--border-light, rgba(63, 67, 80, 0.12));
+  border-bottom: 1px solid rgba(var(--center-channel-color-rgb, 63, 67, 80), 0.12);
 }
 
 .standup-tab {
@@ -521,7 +532,7 @@
   align-items: center;
   height: 32px;
   padding: 0 12px;
-  border: 1px solid var(--border-default, rgba(63, 67, 80, 0.16));
+  border: 1px solid rgba(var(--center-channel-color-rgb, 63, 67, 80), 0.16);
   border-radius: var(--radius-s, 4px);
   cursor: pointer;
   font-size: 14px;

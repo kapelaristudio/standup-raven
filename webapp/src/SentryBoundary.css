@@ -11,7 +11,7 @@
   box-sizing: border-box;
   width: min(420px, calc(100vw - 32px));
   padding: 20px;
-  border: 1px solid var(--border-default, rgba(63, 67, 80, 0.16));
+  border: 1px solid rgba(var(--center-channel-color-rgb, 63, 67, 80), 0.16);
   border-radius: var(--radius-m, 8px);
   background: var(--center-channel-bg, #fff);
   box-shadow: var(--elevation-4, 0 12px 32px rgba(0, 0, 0, 0.24));
