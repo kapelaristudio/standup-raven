@@ -20,6 +20,10 @@ const URL_PLUGIN_CONFIG = `${PLUGIN_BASE_URL}/plugin-config`;
 
 const MATTERMOST_CSRF_COOKIE = 'MMCSRF';
 
+// The post type of a report in the "user cards" format, which the server sets
+// and this webapp draws.
+const POST_TYPE_STANDUP_REPORT = 'custom_standup_raven_report';
+
 // What kind of input a section asks for. These are the values the server
 // stores, so they are not ours to rename here.
 const SECTION_TYPES = {
@@ -49,4 +53,5 @@ export default {
     URL_GET_TIMEZONE,
     URL_ACTIVE_CHANNELS,
     URL_PLUGIN_CONFIG,
+    POST_TYPE_STANDUP_REPORT,
 };

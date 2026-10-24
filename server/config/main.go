@@ -29,6 +29,19 @@ const (
 	ReportFormatUserAggregated = "user_aggregated"
 	ReportFormatTypeAggregated = "type_aggregated"
 
+	// The three report styles below all group by member, like
+	// ReportFormatUserAggregated, and differ only in how a member is shown:
+	// a plain heading, a Mattermost message attachment, or a card the webapp
+	// draws with the member's round profile picture.
+	ReportFormatUserCompact     = "user_compact"
+	ReportFormatUserAttachments = "user_attachments"
+	ReportFormatUserCards       = "user_cards"
+
+	// PostTypeStandupReport is the post type the webapp registers a component
+	// for to draw ReportFormatUserCards. Mattermost only lets plugins use post
+	// types that start with "custom_".
+	PostTypeStandupReport = "custom_standup_raven_report"
+
 	CacheKeyPrefixNotificationStatus = "notif_status"
 	CacheKeyPrefixTeamStandupConfig  = "standup_config_"
 
@@ -54,7 +67,13 @@ const (
 var (
 	config        atomic.Pointer[Configuration]
 	Mattermost    plugin.API
-	ReportFormats = []string{ReportFormatUserAggregated, ReportFormatTypeAggregated}
+	ReportFormats = []string{
+		ReportFormatUserAggregated,
+		ReportFormatTypeAggregated,
+		ReportFormatUserCompact,
+		ReportFormatUserAttachments,
+		ReportFormatUserCards,
+	}
 )
 
 type Configuration struct {

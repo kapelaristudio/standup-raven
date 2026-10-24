@@ -1,0 +1,74 @@
+/* A standup report in the "user cards" format: a card per member, with the
+   round profile picture Mattermost shows next to posts. Colours come from the
+   theme so the cards read on a dark theme as well as a light one. */
+
+.standup-report {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 720px;
+}
+
+.standup-report-title {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.standup-report-title p,
+.standup-report-notes p,
+.standup-report-section-body p {
+  margin: 0;
+}
+
+.standup-report-notes {
+  color: rgba(var(--center-channel-color-rgb, 63, 67, 80), 0.72);
+}
+
+.standup-report-card {
+  padding: 12px 16px;
+  border: 1px solid rgba(var(--center-channel-color-rgb, 63, 67, 80), 0.16);
+  border-radius: var(--radius-m, 8px);
+  background: rgba(var(--center-channel-color-rgb, 63, 67, 80), 0.04);
+}
+
+.standup-report-member {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.standup-report-avatar {
+  width: 32px;
+  height: 32px;
+  flex: none;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.standup-report-name {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.standup-report-section {
+  margin-top: 8px;
+}
+
+.standup-report-section-title {
+  color: rgba(var(--center-channel-color-rgb, 63, 67, 80), 0.72);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 16px;
+}
+
+.standup-report-section-body ol,
+.standup-report-section-body ul {
+  margin: 2px 0 0;
+}
+
+.standup-report-fallback {
+  white-space: pre-wrap;
+}

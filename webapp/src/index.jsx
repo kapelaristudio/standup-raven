@@ -1,12 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ChannelHeaderButtonIcon from './components/channelHeaderButton';
 import reducer from './reducer';
 import Actions from './actions';
 import StandupModal from './components/standupModal';
 import ConfigModal from './components/configModal';
+import StandupReport from './components/standupReport';
 import Constants from './constants';
 import * as Sentry from '@sentry/browser';
-import {withBoundary} from './SentryBoundary';
+import SentryBoundary, {withBoundary} from './SentryBoundary';
 import utils from './utils';
 import * as RavenClient from './raven-client';
 
@@ -29,6 +31,7 @@ class StandupRavenPlugin {
 
         registry.registerRootComponent(withBoundary(StandupModal));
         registry.registerRootComponent(withBoundary(ConfigModal));
+        registry.registerPostTypeComponent(Constants.POST_TYPE_STANDUP_REPORT, GuardedStandupReport);
         registry.registerWebSocketEventHandler(
             `custom_${Constants.PLUGIN_NAME}_open_config_modal`,
             () => {
@@ -61,6 +64,22 @@ class StandupRavenPlugin {
         registry.registerReducer(reducer);
     }
 }
+
+// A report that fails to draw falls back to its message as plain text, in place
+// in the channel, rather than to the boundary's usual message over the page.
+function GuardedStandupReport(props) {
+    const fallback = <div className={'standup-report-fallback'}>{props.post.message}</div>;
+
+    return (
+        <SentryBoundary fallback={fallback}>
+            <StandupReport {...props}/>
+        </SentryBoundary>
+    );
+}
+
+GuardedStandupReport.propTypes = {
+    post: PropTypes.shape({message: PropTypes.string}).isRequired,
+};
 
 function initSentry(dsn) {
     Sentry.init({

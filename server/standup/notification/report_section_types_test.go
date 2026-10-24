@@ -43,6 +43,9 @@ func Test_Reports_RenderSectionsByType(t *testing.T) {
 	}{
 		{name: "user aggregated", generate: generateUserAggregatedStandupReport},
 		{name: "type aggregated", generate: generateTypeAggregatedStandupReport},
+		{name: "user compact", generate: generateUserCompactStandupReport},
+		{name: "user attachments", generate: generateUserAttachmentsStandupReport},
+		{name: "user cards", generate: generateUserCardsStandupReport},
 	}
 
 	for _, generator := range generators {
@@ -52,6 +55,7 @@ func Test_Reports_RenderSectionsByType(t *testing.T) {
 			mockAPI := setUp()
 			baseMock(mockAPI)
 			mockAPI.On("GetUser", "user_id_1").Return(&model.User{Username: "alice"}, nil)
+			mockAPI.On("GetConfig").Return(&model.Config{})
 
 			report, err := generator.generate(
 				sectionTypesReportConfig(),
@@ -67,13 +71,20 @@ func Test_Reports_RenderSectionsByType(t *testing.T) {
 				return
 			}
 
-			assert.Contains(t, report.Message, "1. Reviewed the board PR\n1. Ran the calibration suite",
+			// The attachments report carries the members' standups in its
+			// attachments rather than in the message.
+			text := report.Message
+			for _, attachment := range report.Attachments() {
+				text += "\n" + attachment.Text
+			}
+
+			assert.Contains(t, text, "1. Reviewed the board PR\n1. Ran the calibration suite",
 				"a question answered in lines keeps its numbering")
-			assert.Contains(t, report.Message, "```\nE: timeout\n```",
+			assert.Contains(t, text, "```\nE: timeout\n```",
 				"work notes keep their code block")
-			assert.Contains(t, report.Message, "**Issues:** AXELERA-210, AXELERA-183",
+			assert.Contains(t, text, "**Issues:** AXELERA-210, AXELERA-183",
 				"issue IDs are shown as one line")
-			assert.NotContains(t, report.Message, "1. Trace:",
+			assert.NotContains(t, text, "1. Trace:",
 				"work notes are not turned into a numbered list")
 		})
 	}

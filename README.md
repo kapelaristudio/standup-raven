@@ -50,6 +50,12 @@ A Mattermost plugin for communicating daily standups across teams
 
     <img src="docs/assets/images/report-type-aggregated.png?raw=true" width="500px"></img>
 
+  * By member, compact - Like User Aggregated, with each member under their name and no profile pictures
+
+  * By member, message attachments - Each member in a Mattermost message attachment with their name and picture. Mentions in it notify, but Mattermost search does not look inside attachments
+
+  * By member, cards with profile pictures - Each member in a card with their round profile picture, drawn by the plugin's webapp. The post also carries the compact report, which is what search, mention notifications and the mobile apps use
+
 * Ability to preview a standup report without publishing it in the channel
 * Ability to manually generate standup reports for any arbitrary date
 

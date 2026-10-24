@@ -18,6 +18,7 @@ import {buildStandupConfigPayload} from '../src/components/configModal/payload';
 import StandupModal from '../src/components/standupModal/standupModal.jsx';
 import {buildUserStandupPayload} from '../src/components/standupModal/payload';
 import TimePicker from '../src/components/timePicker/timePicker.jsx';
+import StandupReport from '../src/components/standupReport/standupReport.jsx';
 
 export {
     React,
@@ -37,4 +38,5 @@ export {
     StandupModal,
     buildUserStandupPayload,
     TimePicker,
+    StandupReport,
 };

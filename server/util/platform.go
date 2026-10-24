@@ -15,6 +15,19 @@ func UserIcon(userID string) string {
 	return fmt.Sprintf("![User Avatar]("+config.UserIconURL+" "+config.UserIconSize+")", userID)
 }
 
+// UserIconURL is the address of a user's profile picture. It is absolute when
+// the server has a Site URL, which the mobile apps need to load it; the webapp
+// resolves the relative path against the server it is on.
+func UserIconURL(userID string) string {
+	path := fmt.Sprintf(config.UserIconURL, userID)
+
+	if mmConfig := config.Mattermost.GetConfig(); mmConfig != nil && mmConfig.ServiceSettings.SiteURL != nil {
+		return strings.TrimSuffix(*mmConfig.ServiceSettings.SiteURL, "/") + path
+	}
+
+	return path
+}
+
 // GetUserRoles fetches all roles of a user - system level, team level and channel level
 func GetUserRoles(userID, channelID string) ([]string, *model.AppError) {
 	var rolesString string

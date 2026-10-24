@@ -1055,6 +1055,59 @@ async function main() {
         }
     }
 
+    console.log('\n[10] A report in the cards format');
+    {
+        const {StandupReport} = bundle;
+        const mount = (element) => {
+            const container = document.createElement('div');
+            document.body.appendChild(container);
+            const root = createRoot(container);
+            act(() => root.render(element));
+            return {container, root};
+        };
+
+        const post = {
+            message: '#### Standup Report for *24 Oct 2026*',
+            props: {
+                standup_report: {
+                    title: 'Standup Report for *24 Oct 2026*',
+                    notes: '@carol has not submitted their standup.',
+                    members: [
+                        {user_id: 'user_1', display_name: 'Foo Bar', sections: [{title: 'Today', body: '1. Internal sync'}]},
+                        {user_id: 'user_2', display_name: 'John Doe', sections: [{title: 'Today', body: '1. Release notes'}, {title: 'Blockers', body: '1. Mail'}]},
+                    ],
+                },
+            },
+        };
+
+        const {container, root} = mount(React.createElement(StandupReport, {
+            post,
+            siteURL: 'https://chat.example.com',
+            profiles: {user_1: {last_picture_update: 42}},
+        }));
+        const cards = container.querySelectorAll('.standup-report-card');
+        check('one card per member', cards.length === 2, String(cards.length));
+        const avatar = cards[0] && cards[0].querySelector('img.standup-report-avatar');
+        check('each card shows the member\'s picture, refreshed when they change it',
+            avatar && avatar.getAttribute('src') === 'https://chat.example.com/api/v4/users/user_1/image?_=42',
+            avatar && avatar.getAttribute('src'));
+        const avatarStyle = avatar && dom.window.getComputedStyle(avatar);
+        check('the picture is round', avatarStyle && avatarStyle.borderRadius === '50%',
+            avatarStyle && avatarStyle.borderRadius);
+        check('the cards name their member',
+            cards[1] && cards[1].querySelector('.standup-report-name').textContent === 'John Doe');
+        check('and show each section under its title',
+            cards[1] && cards[1].querySelectorAll('.standup-report-section').length === 2);
+        check('the note about who is missing is shown',
+            container.textContent.indexOf('@carol has not submitted their standup.') >= 0);
+        act(() => root.unmount());
+
+        const bare = mount(React.createElement(StandupReport, {post: {message: 'the report as Markdown', props: {}}}));
+        check('a post without the report shows its message',
+            bare.container.textContent === 'the report as Markdown', bare.container.textContent);
+        act(() => bare.root.unmount());
+    }
+
     console.log('');
 
     // Exit explicitly. React's scheduler keeps a MessageChannel open, and the

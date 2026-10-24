@@ -251,6 +251,12 @@ func generateReport(
 		post, err = generateTypeAggregatedStandupReport(standupConfig, members, membersNoStandup, membersOutOfOffice, channelID, date)
 	case config.ReportFormatUserAggregated:
 		post, err = generateUserAggregatedStandupReport(standupConfig, members, membersNoStandup, membersOutOfOffice, channelID, date)
+	case config.ReportFormatUserCompact:
+		post, err = generateUserCompactStandupReport(standupConfig, members, membersNoStandup, membersOutOfOffice, channelID, date)
+	case config.ReportFormatUserAttachments:
+		post, err = generateUserAttachmentsStandupReport(standupConfig, members, membersNoStandup, membersOutOfOffice, channelID, date)
+	case config.ReportFormatUserCards:
+		post, err = generateUserCardsStandupReport(standupConfig, members, membersNoStandup, membersOutOfOffice, channelID, date)
 	default:
 		err = errors.New("Unknown report format encountered for channel: " + channelID + ", report format: " + standupConfig.ReportFormat)
 		logger.Error("Unknown report format encountered for channel", err, nil)

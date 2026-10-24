@@ -25,6 +25,9 @@ const SECTION_TYPE_OPTIONS = [
 const REPORT_FORMAT_OPTIONS = [
     {value: 'user_aggregated', label: 'User Aggregated'},
     {value: 'type_aggregated', label: 'Type Aggregated'},
+    {value: 'user_compact', label: 'By member, compact'},
+    {value: 'user_attachments', label: 'By member, message attachments'},
+    {value: 'user_cards', label: 'By member, cards with profile pictures'},
 ];
 
 class ConfigModal extends React.Component {
