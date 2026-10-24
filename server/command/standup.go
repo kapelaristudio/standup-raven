@@ -7,6 +7,7 @@ import (
 
 	"github.com/mattermost/mattermost/server/public/model"
 
+	"github.com/standup-raven/standup-raven/server/logger"
 	"github.com/standup-raven/standup-raven/server/otime"
 	"github.com/standup-raven/standup-raven/server/standup"
 	"github.com/standup-raven/standup-raven/server/standup/notification"
@@ -99,12 +100,25 @@ func executeCommandStandup(args []string, context Context) (*model.CommandRespon
 	visibility := context.Props["visibility"].(string)
 	userID := context.CommandArgs.UserId
 
+	// A report that could not be posted used to be dropped here while the
+	// reply still said it had been generated, so the user saw nothing at all
+	// and had no way to tell why. Each date's outcome is reported instead.
+	var failures []string
+
 	for _, date := range context.Props["dates"].([]otime.OTime) {
-		_ = notification.SendStandupReport([]string{channelID}, date, visibility, userID, false)
+		if err := notification.SendStandupReport([]string{channelID}, date, visibility, userID, false); err != nil {
+			logger.Error("Couldn't generate standup report", err, map[string]interface{}{"channelID": channelID, "date": date.Format(dateLayout)})
+			failures = append(failures, fmt.Sprintf("* %s: %s", date.Format(dateLayout), err.Error()))
+		}
+	}
+
+	text := "Standup reports generated"
+	if len(failures) > 0 {
+		text = "Couldn't generate the standup report for:\n" + strings.Join(failures, "\n")
 	}
 
 	return &model.CommandResponse{
 		ResponseType: model.CommandResponseTypeEphemeral,
-		Text:         "Standup reports generated",
+		Text:         text,
 	}, nil
 }
